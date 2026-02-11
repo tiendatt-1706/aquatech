@@ -100,7 +100,7 @@ img {
     align-items: center;
     gap: 10px;
     font-family: 'Montserrat', sans-serif;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: var(--white);
     transition: var(--transition);
@@ -112,6 +112,12 @@ img {
 
 .logo i {
     font-size: 1.8rem;
+}
+
+.logo-header {
+    width: 80px;
+    height: 50px;
+    object-fit: cover;
 }
 
 .nav-links {
@@ -2322,6 +2328,12 @@ img {
     color: var(--white);
     padding-top: 0;
     position: relative;
+}
+
+.logo-footer {
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
 }
 
 .footer-wave {
