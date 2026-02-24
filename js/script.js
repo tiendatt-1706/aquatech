@@ -1,11 +1,12 @@
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // ================================
     // EARTH ANIMATION (Hero Section)
     // ================================
     const actionBtn = document.getElementById('actionBtn');
     const heroSection = document.querySelector('.hero');
     const heroTitle = document.querySelector('.hero-title');
+    const heroDesc = document.querySelector('.hero-desc');
     const earthContainer = document.getElementById('earthContainer');
     const trashEarth = document.querySelector('.earth-trash');
     const cleanEarth = document.querySelector('.earth-clean');
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let isClean = false;
 
     if (actionBtn && earthContainer) {
-        actionBtn.addEventListener('click', function() {
+        actionBtn.addEventListener('click', function () {
             if (!isClean) {
                 // --- ACTIVATE CLEAN MODE ---
                 
@@ -30,6 +31,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 // 4. Update title
                 if (heroTitle) {
                     heroTitle.innerHTML = 'CẢM ƠN BẠN ĐÃ<br><span class="highlight">HÀNH ĐỘNG!</span>';
+                }
+
+                // 4.5. Update description
+                if (heroDesc) {
+                    heroDesc.textContent = 'Cảm ơn bạn đã không đứng ngoài cuộc. Hành động của bạn chính là câu trả lời mạnh mẽ nhất để bảo vệ nguồn khởi nguồn của sự sống và giữ cho đại dương luôn xanh màu hy vọng.';
                 }
                 
                 // 5. Update button
@@ -55,6 +61,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (heroTitle) {
                     heroTitle.innerHTML = 'HÀNH TINH HAY<br><span class="highlight">BÃI RÁC ?</span>';
                 }
+
+                // 4.5. Reset description
+                if (heroDesc) {
+                    heroDesc.textContent = 'Nước là khởi nguồn của sự sống. Nhưng mỗi phút trôi qua, chúng ta đang biến đại dương thành bãi rác khổng lồ. Hãy hành động trước khi giọt nước cuối cùng cạn kiệt.';
+                }
                 
                 // 5. Reset button
                 actionBtn.classList.remove('clean');
@@ -71,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const navbar = document.querySelector('.navbar');
     const backToTop = document.getElementById('backToTop');
 
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         if (window.scrollY > 100) {
             navbar.classList.add('scrolled');
             backToTop.classList.add('visible');
@@ -87,14 +98,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
 
-    hamburger.addEventListener('click', function() {
+    hamburger.addEventListener('click', function () {
         hamburger.classList.toggle('active');
         navLinks.classList.toggle('active');
     });
 
     // Close menu when clicking a link
     document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', function() {
+        link.addEventListener('click', function () {
             hamburger.classList.remove('active');
             navLinks.classList.remove('active');
         });
@@ -194,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const tabContents = document.querySelectorAll('.tab-content');
 
     tabBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function () {
             // Remove active class from all buttons and contents
             tabBtns.forEach(b => b.classList.remove('active'));
             tabContents.forEach(c => c.classList.remove('active'));
@@ -212,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // SMOOTH SCROLL FOR ANCHOR LINKS
     // ================================
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
+        anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             const targetElement = document.querySelector(targetId);
@@ -235,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const contactForm = document.getElementById('contactForm');
 
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
 
             // Get form values
@@ -260,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const newsletterForm = document.querySelector('.newsletter-form');
 
     if (newsletterForm) {
-        newsletterForm.addEventListener('submit', function(e) {
+        newsletterForm.addEventListener('submit', function (e) {
             e.preventDefault();
             const emailInput = this.querySelector('input[type="email"]');
 
@@ -277,7 +288,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const hero = document.querySelector('.hero');
     const heroContent = document.querySelector('.hero-content');
 
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         if (hero) {
             const scrollPosition = window.scrollY;
             if (scrollPosition < window.innerHeight) {
@@ -290,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ================================
     // WATER RIPPLE EFFECT ON CLICK
     // ================================
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         // Only on certain sections
         const effectTargets = document.querySelectorAll('.hero, .overview, .effects');
         let isInTarget = false;
@@ -376,7 +387,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ================================
     // LOADING ANIMATION
     // ================================
-    window.addEventListener('load', function() {
+    window.addEventListener('load', function () {
         document.body.classList.add('loaded');
 
         // Animate hero elements
@@ -566,7 +577,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const allOptions = quizContainer.querySelectorAll('.quiz-option');
 
         allOptions.forEach(option => {
-            option.addEventListener('click', function() {
+            option.addEventListener('click', function () {
                 // Prevent multiple clicks
                 const currentQuestionEl = this.closest('.quiz-question');
                 const options = currentQuestionEl.querySelectorAll('.quiz-option');
@@ -644,7 +655,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Join community button
     if (joinCommunityBtn && communityCount) {
-        joinCommunityBtn.addEventListener('click', function() {
+        joinCommunityBtn.addEventListener('click', function () {
             const currentCount = parseInt(communityCount.getAttribute('data-target'));
             const newCount = currentCount + 1;
 
@@ -675,6 +686,34 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         `;
         document.head.appendChild(highlightStyle);
+    }
+
+    // ================================
+    // GALLERY SLIDER
+    // ================================
+    const gallerySlider = document.querySelector('.gallery-slider');
+    if (gallerySlider) {
+        const slides = gallerySlider.querySelectorAll('.gallery-slide');
+        const dots = gallerySlider.querySelectorAll('.gallery-dot');
+        const nextBtn = gallerySlider.querySelector('.gallery-slider-btn.next');
+        const prevBtn = gallerySlider.querySelector('.gallery-slider-btn.prev');
+        const slidesContainer = gallerySlider.querySelector('.gallery-slides');
+        let currentSlide = 0;
+
+
+        function goToSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            currentSlide = ((index % slides.length) + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+        if (prevBtn) prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => goToSlide(Number(dot.dataset.slide)));
+        });
     }
 
     console.log('SaveWater - Landing Page Loaded Successfully!');

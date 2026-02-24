@@ -324,30 +324,83 @@
                     </div>
                 </div>
 
-                <!-- Image Gallery - Nguyên nhân -->
+                <!-- Image Gallery - Nguyên nhân (Slider) -->
                 <div class="causes-gallery scroll-animate fade-up">
                     <h3 class="gallery-title">Hình ảnh thực tế</h3>
-                    <div class="gallery-grid">
-                        <div class="gallery-item large">
-                            <img
-                                src="./assets/img/trandau.jpg"
-                                alt="Nhà máy xả thải"
-                                loading="lazy"
-                            />
+                    <div class="gallery-slider">
+                        <div class="gallery-slides">
+                            <!-- Slide 1 -->
+                            <div class="gallery-slide active">
+                                <div class="gallery-grid">
+                                    <div class="gallery-item large">
+                                        <img
+                                            src="./assets/img/trandau.jpg"
+                                            alt="Sự cố tràn dầu"
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                    <div class="gallery-item">
+                                        <img
+                                            src="./assets/img/rac.png"
+                                            alt="Rác thải nhựa"
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                    <div class="gallery-item">
+                                        <img
+                                            src="./assets/img/nongngiep.jpg"
+                                            alt="Nông nghiệp gây ô nhiễm"
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Slide 2 -->
+                            <div class="gallery-slide">
+                                <div class="gallery-grid">
+                                    <div class="gallery-item large">
+                                        <img
+                                            src="./assets/img/sinhoat.png"
+                                            alt="Rác thải đại dương"
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                    <div class="gallery-item">
+                                        <img
+                                            src="./assets/img/congnghiep.png"
+                                            alt="Nước thải công nghiệp"
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                    <div class="gallery-item">
+                                        <img
+                                            src="./assets/img/khhoangsan.jpg"
+                                            alt="Ô nhiễm sông Tô Lịch"
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="gallery-item">
-                            <img
-                                src="./assets/img/rac.png"
-                                alt="Rác thải nhựa"
-                                loading="lazy"
-                            />
-                        </div>
-                        <div class="gallery-item">
-                            <img
-                                src="./assets/img/nong-nghiep-1.jpg"
-                                alt="Nông nghiệp gây ô nhiễm"
-                                loading="lazy"
-                            />
+                        <!-- Slider Controls -->
+                        <button
+                            class="gallery-slider-btn prev"
+                            aria-label="Trước"
+                        >
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button
+                            class="gallery-slider-btn next"
+                            aria-label="Sau"
+                        >
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <div class="gallery-dots">
+                            <span
+                                class="gallery-dot active"
+                                data-slide="0"
+                            ></span>
+                            <span class="gallery-dot" data-slide="1"></span>
                         </div>
                     </div>
                 </div>
@@ -1108,11 +1161,51 @@
                         <h4>Nguồn & Tài liệu tham khảo</h4>
                         <!-- <p>Đọc thêm từ các nguồn uy tín</p> -->
                         <ul class="reference-links">
-                            <li><a href="https://vi.wikipedia.org/wiki/%C3%94_nhi%E1%BB%85m_n%C6%B0%E1%BB%9Bc" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> Wikipedia - Ô nhiễm nước</a></li>
-                            <li><a href="https://www.who.int/news-room/fact-sheets/detail/drinking-water" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> WHO - Nước uống an toàn</a></li>
-                            <li><a href="https://www.unep.org/explore-topics/water" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> UNEP - Tài nguyên nước</a></li>
-                            <li><a href="https://vi.wikipedia.org/wiki/B%E1%BA%A3o_v%E1%BB%87_m%C3%B4i_tr%C6%B0%E1%BB%9Dng" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> Wikipedia - Bảo vệ môi trường</a></li>
-                            <li><a href="https://www.worldwildlife.org/threats/water-scarcity" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> WWF - Khan hiếm nước</a></li>
+                            <li>
+                                <a
+                                    href="https://vi.wikipedia.org/wiki/%C3%94_nhi%E1%BB%85m_n%C6%B0%E1%BB%9Bc"
+                                    target="_blank"
+                                    rel="noopener"
+                                    ><i class="fas fa-external-link-alt"></i>
+                                    Wikipedia - Ô nhiễm nước</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://www.who.int/news-room/fact-sheets/detail/drinking-water"
+                                    target="_blank"
+                                    rel="noopener"
+                                    ><i class="fas fa-external-link-alt"></i>
+                                    WHO - Nước uống an toàn</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://www.unep.org/explore-topics/water"
+                                    target="_blank"
+                                    rel="noopener"
+                                    ><i class="fas fa-external-link-alt"></i>
+                                    UNEP - Tài nguyên nước</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://vi.wikipedia.org/wiki/B%E1%BA%A3o_v%E1%BB%87_m%C3%B4i_tr%C6%B0%E1%BB%9Dng"
+                                    target="_blank"
+                                    rel="noopener"
+                                    ><i class="fas fa-external-link-alt"></i>
+                                    Wikipedia - Bảo vệ môi trường</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://www.worldwildlife.org/threats/water-scarcity"
+                                    target="_blank"
+                                    rel="noopener"
+                                    ><i class="fas fa-external-link-alt"></i>
+                                    WWF - Khan hiếm nước</a
+                                >
+                            </li>
                         </ul>
                     </div>
                 </div>
