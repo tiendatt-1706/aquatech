@@ -82,15 +82,46 @@ document.addEventListener('DOMContentLoaded', function () {
     const navbar = document.querySelector('.navbar');
     const backToTop = document.getElementById('backToTop');
 
+    // ================================
+    // UNIFIED SCROLL HANDLER (navbar + back-to-top + nav highlight)
+    // ================================
+    const sections = document.querySelectorAll('section[id]');
+    const navLinksAll = document.querySelectorAll('.nav-links a');
+    let scrollTicking = false;
+
     window.addEventListener('scroll', function () {
-        if (window.scrollY > 100) {
-            navbar.classList.add('scrolled');
-            backToTop.classList.add('visible');
-        } else {
-            navbar.classList.remove('scrolled');
-            backToTop.classList.remove('visible');
+        if (!scrollTicking) {
+            requestAnimationFrame(function () {
+                const y = window.scrollY;
+
+                // Navbar + back-to-top
+                if (y > 100) {
+                    navbar.classList.add('scrolled');
+                    backToTop.classList.add('visible');
+                } else {
+                    navbar.classList.remove('scrolled');
+                    backToTop.classList.remove('visible');
+                }
+
+                // Active nav link highlight
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 150;
+                    if (y > sectionTop && y <= sectionTop + section.offsetHeight) {
+                        const sectionId = section.getAttribute('id');
+                        navLinksAll.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === '#' + sectionId) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+
+                scrollTicking = false;
+            });
+            scrollTicking = true;
         }
-    });
+    }, { passive: true });
 
     // ================================
     // MOBILE MENU TOGGLE
@@ -112,43 +143,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // ================================
-    // SCROLL ANIMATIONS
+    // SCROLL ANIMATIONS (IntersectionObserver only)
     // ================================
     const scrollElements = document.querySelectorAll('.scroll-animate');
-
-    const elementInView = (el, dividend = 1) => {
-        const elementTop = el.getBoundingClientRect().top;
-        return (
-            elementTop <= (window.innerHeight || document.documentElement.clientHeight) / dividend
-        );
-    };
-
-    const displayScrollElement = (element) => {
-        element.classList.add('visible');
-    };
-
-    const handleScrollAnimation = () => {
-        scrollElements.forEach((el) => {
-            if (elementInView(el, 1.25)) {
-                displayScrollElement(el);
+    const scrollObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                scrollObserver.unobserve(entry.target);
             }
         });
-    };
+    }, { rootMargin: '0px', threshold: 0.1 });
 
-    // Throttle scroll event for better performance
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-        if (!ticking) {
-            window.requestAnimationFrame(() => {
-                handleScrollAnimation();
-                ticking = false;
-            });
-            ticking = true;
-        }
-    });
-
-    // Initial check
-    handleScrollAnimation();
+    scrollElements.forEach(el => scrollObserver.observe(el));
 
     // ================================
     // COUNTER ANIMATION
@@ -283,22 +290,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ================================
-    // PARALLAX EFFECT FOR HERO
-    // ================================
-    const hero = document.querySelector('.hero');
-    const heroContent = document.querySelector('.hero-content');
-
-    window.addEventListener('scroll', function () {
-        if (hero) {
-            const scrollPosition = window.scrollY;
-            if (scrollPosition < window.innerHeight) {
-                heroContent.style.transform = `translateY(${scrollPosition * 0.3}px)`;
-                heroContent.style.opacity = 1 - (scrollPosition / (window.innerHeight * 0.8));
-            }
-        }
-    });
-
-    // ================================
     // WATER RIPPLE EFFECT ON CLICK
     // ================================
     document.addEventListener('click', function (e) {
@@ -313,7 +304,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         if (isInTarget && !e.target.closest('a, button, input, textarea')) {
-            createRipple(e.pageX, e.pageY);
+            createRipple(e.clientX, e.clientY);
         }
     });
 
@@ -323,66 +314,8 @@ document.addEventListener('DOMContentLoaded', function () {
         ripple.style.left = x + 'px';
         ripple.style.top = y + 'px';
         document.body.appendChild(ripple);
-
-        setTimeout(() => {
-            ripple.remove();
-        }, 1000);
+        setTimeout(() => ripple.remove(), 1000);
     }
-
-    // Add ripple styles dynamically
-    const rippleStyles = document.createElement('style');
-    rippleStyles.textContent = `
-        .water-ripple {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: rgba(144, 224, 239, 0.5);
-            border-radius: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            animation: rippleEffect 1s ease-out;
-            pointer-events: none;
-            z-index: 9999;
-        }
-
-        @keyframes rippleEffect {
-            0% {
-                transform: translate(-50%, -50%) scale(0);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(20);
-                opacity: 0;
-            }
-        }
-    `;
-    document.head.appendChild(rippleStyles);
-
-    // ================================
-    // ACTIVE NAV LINK ON SCROLL
-    // ================================
-    const sections = document.querySelectorAll('section[id]');
-    const navLinksAll = document.querySelectorAll('.nav-links a');
-
-    const highlightNavOnScroll = () => {
-        const scrollY = window.pageYOffset;
-
-        sections.forEach(section => {
-            const sectionHeight = section.offsetHeight;
-            const sectionTop = section.offsetTop - 150;
-            const sectionId = section.getAttribute('id');
-
-            if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-                navLinksAll.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === '#' + sectionId) {
-                        link.classList.add('active');
-                    }
-                });
-            }
-        });
-    };
-
-    window.addEventListener('scroll', highlightNavOnScroll);
 
     // ================================
     // LOADING ANIMATION
@@ -418,25 +351,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ================================
-    // INTERSECTION OBSERVER FOR LAZY ANIMATIONS
-    // ================================
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, observerOptions);
-
-    scrollElements.forEach(el => observer.observe(el));
-
-    // ================================
     // POLLUTION JOURNEY ANIMATION
     // ================================
     const journeySteps = document.querySelectorAll('.journey-step');
@@ -459,61 +373,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (pollutionJourney) {
         journeyObserver.observe(pollutionJourney);
     }
-
-    // Add journey animation styles
-    const journeyStyles = document.createElement('style');
-    journeyStyles.textContent = `
-        .journey-step {
-            opacity: 0;
-            transform: translateX(-30px);
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .journey-step.step-visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .journey-step:nth-child(even) {
-            transform: translateX(30px);
-        }
-
-        .journey-step:nth-child(even).step-visible {
-            transform: translateX(0);
-        }
-
-        .step-connector {
-            opacity: 0;
-            transition: opacity 0.5s ease 0.3s;
-        }
-
-        .journey-step.step-visible .step-connector {
-            opacity: 1;
-        }
-
-        .nav-links a.active {
-            color: var(--primary-color) !important;
-        }
-
-        .nav-links a.active::after {
-            width: 100%;
-        }
-
-        /* Responsive animation adjustments */
-        @media (max-width: 768px) {
-            .journey-step {
-                transform: translateY(30px);
-            }
-            .journey-step:nth-child(even) {
-                transform: translateY(30px);
-            }
-            .journey-step.step-visible,
-            .journey-step:nth-child(even).step-visible {
-                transform: translateY(0);
-            }
-        }
-    `;
-    document.head.appendChild(journeyStyles);
 
     // ================================
     // COMMUNITY COUNTER ANIMATION
@@ -676,16 +535,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }, 1000);
             }
         });
-
-        // Add highlight animation
-        const highlightStyle = document.createElement('style');
-        highlightStyle.textContent = `
-            @keyframes highlightPulse {
-                0%, 100% { box-shadow: 0 15px 40px rgba(0, 119, 182, 0.3); }
-                50% { box-shadow: 0 0 60px rgba(0, 180, 216, 0.8); }
-            }
-        `;
-        document.head.appendChild(highlightStyle);
     }
 
     // ================================
@@ -699,20 +548,64 @@ document.addEventListener('DOMContentLoaded', function () {
         const prevBtn = gallerySlider.querySelector('.gallery-slider-btn.prev');
         const slidesContainer = gallerySlider.querySelector('.gallery-slides');
         let currentSlide = 0;
+        let isAnimating = false;
+        const DURATION = 600; // ms — must match CSS transition duration
 
+        function goToSlide(index, direction) {
+            if (isAnimating) return;
+            const nextIndex = ((index % slides.length) + slides.length) % slides.length;
+            if (nextIndex === currentSlide) return;
+            isAnimating = true;
 
-        function goToSlide(index) {
-            slides[currentSlide].classList.remove('active');
+            const outSlide = slides[currentSlide];
+            const inSlide = slides[nextIndex];
+
+            // Prepare incoming slide: start offset based on direction
+            const fromRight = direction !== 'prev';
+            inSlide.style.transform = fromRight ? 'translateX(30px)' : 'translateX(-30px)';
+            inSlide.style.transition = 'none';
+            inSlide.style.opacity = '0';
+            inSlide.style.visibility = 'visible';
+            inSlide.style.position = 'absolute';
+            inSlide.style.pointerEvents = 'none';
+
+            // Force reflow so the start state is painted before we add transitions
+            inSlide.offsetHeight;
+
+            // Now animate both slides
+            inSlide.style.transition = '';
+            outSlide.classList.add('exiting');
+
+            // Use requestAnimationFrame to start the incoming slide transition
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    inSlide.classList.add('active');
+                    inSlide.style.transform = '';
+                    inSlide.style.opacity = '';
+                    inSlide.style.visibility = '';
+                    inSlide.style.position = '';
+                    inSlide.style.pointerEvents = '';
+                });
+            });
+
             dots[currentSlide].classList.remove('active');
-            currentSlide = ((index % slides.length) + slides.length) % slides.length;
-            slides[currentSlide].classList.add('active');
+            currentSlide = nextIndex;
             dots[currentSlide].classList.add('active');
+
+            setTimeout(() => {
+                outSlide.classList.remove('active', 'exiting');
+                outSlide.style.transform = '';
+                isAnimating = false;
+            }, DURATION);
         }
 
-        nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
-        if (prevBtn) prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+        nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1, 'next'));
+        if (prevBtn) prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1, 'prev'));
         dots.forEach(dot => {
-            dot.addEventListener('click', () => goToSlide(Number(dot.dataset.slide)));
+            dot.addEventListener('click', () => {
+                const dir = Number(dot.dataset.slide) > currentSlide ? 'next' : 'prev';
+                goToSlide(Number(dot.dataset.slide), dir);
+            });
         });
     }
 
